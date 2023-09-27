@@ -10,6 +10,7 @@ on:
         options:
         - centos7
         - stream8
+        - stream8-devel
         - stream9
 permissions:
   id-token: write
