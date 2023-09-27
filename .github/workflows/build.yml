@@ -8,7 +8,9 @@ on:
         default: 'stream8'
         type: choice
         options:
+        - centos7
         - stream8
+        - stream9
 permissions:
   id-token: write
   packages: write
@@ -39,7 +41,7 @@ jobs:
       - name: Docker build and push
         uses: docker/build-push-action@v5.0.0
         with:
-          context: ./${{ github.event.inputs.image }}
+          context: ./images/${{ github.event.inputs.image }}
           push: true
           platforms: "linux/amd64"
           tags: ghcr.io/platformfuzz/image-builder/${{ github.event.inputs.image }}:latest
