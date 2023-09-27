@@ -5,7 +5,7 @@ RUN dnf module enable -y python38:3.8 \
     'dnf-command(config-manager)' curl wget git jq \
     gnupg hostname net-tools initscripts iputils \
     bind-utils yum-utils sshpass make gcc gcc-c++ \
-    openssl-develbzip2-devel libffi-devel zlib-devel \
+    openssl-devel bzip2-devel libffi-devel zlib-devel \
     rpm-build rpmdevtools rpm-sign rpmlint systemd python39 \
   && dnf config-manager --set-enabled powertools
 
