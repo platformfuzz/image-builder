@@ -1,0 +1,48 @@
+name: Docker Image Builder
+on:
+  workflow_dispatch:
+    inputs:
+      image:
+        description: 'Select image to build'
+        required: true
+        default: 'stream8'
+        type: choice
+        options:
+        - stream8
+permissions:
+  id-token: write
+  packages: write
+  contents: write
+concurrency:
+  group: build
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initiating process
+        run: |
+          echo "Building image for ${{ github.event.inputs.image }}"
+      - uses: actions/checkout@v4
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+        with:
+          version: latest
+      - name: Docker login to ghcr.io
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker build and push
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: ./${{ github.event.inputs.image }}
+          push: true
+          platforms: "linux/amd64"
+          tags: ghcr.io/platformfuzz/image-builder/${{ github.event.inputs.image }}:latest
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
