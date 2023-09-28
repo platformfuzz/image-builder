@@ -12,6 +12,7 @@ on:
         - stream8
         - stream8-devel
         - stream9
+        - ubuntu
 permissions:
   id-token: write
   packages: write
