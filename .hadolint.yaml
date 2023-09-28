@@ -1,0 +1,8 @@
+format: tty
+no-color: false
+no-fail: false
+strict-labels: true
+disable-ignore-pragma: true
+trustedRegistries:
+- docker.io
+- "*.gcr.io"
