@@ -42,7 +42,7 @@ jobs:
       - name: Docker build and push
         uses: docker/build-push-action@v5.0.0
         with:
-          context: ./images/${{ github.event.inputs.image }}
+          context: ./${{ github.event.inputs.image }}
           push: true
           platforms: "linux/amd64"
           tags: ghcr.io/platformfuzz/image-builder/${{ github.event.inputs.image }}:latest
