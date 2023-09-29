@@ -1,0 +1,58 @@
+name: Dockerfile Lint
+on:
+  push:
+    branches:
+      - '*'
+      - '!main'
+    paths:
+      - '**/Dockerfile'
+permissions:
+  packages: write
+  contents: write
+  id-token: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix-dockerfiles: ${{ steps.matrix.outputs.dockerfiles }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: matrix
+        run: |
+          dockerfiles_raw=$(ls **/Dockerfile)
+          dockerfiles=$(echo "$dockerfiles_raw" | sed '/^\s*$/d' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "dockerfiles=$dockerfiles" >> $GITHUB_OUTPUT
+      - name: Check Output
+        run: |
+          echo "${{ steps.matrix.outputs.dockerfiles }}"
+  docker-lint:
+    needs: prepare
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/platformfuzz/image-builder/ubuntu-hadolint:latest
+    outputs:
+      os: ${{ steps.test.outputs.os }}
+    strategy:
+      matrix:
+        file: ${{ fromJSON(needs.prepare.outputs.matrix-dockerfiles) }}
+    steps:
+      - id: test
+        run: |
+          echo "Dockerfile: ${{ matrix.file }}"
+          os=$(echo "${{ matrix.file }}" | cut -d '/' -f 1)
+          echo "os=$os" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v4
+      - name: Run Dockerfile Linting
+        run: |
+          if [ -f "./.hadolint.yaml" ]; then
+            /usr/bin/hadolint ./${{ steps.test.outputs.os }}/Dockerfile --config ./.hadolint.yaml | tee ./docker-lint-report.txt
+          else
+          /usr/bin/hadolint ./${{ steps.test.outputs.os }}/Dockerfile | tee ./docker-lint-report.txt
+          fi
+        continue-on-error: true
+      - name: Upload Dockerfile Linting Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-lint-report.txt
+          path: ./docker-lint-report.txt
+          retention-days: 7

@@ -1,4 +1,4 @@
-name: markdown-lint
+name: Markdown Lint
 on:
   pull_request: {}
 permissions:
