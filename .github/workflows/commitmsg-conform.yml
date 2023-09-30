@@ -1,4 +1,4 @@
-name: commitmsg-conform
+name: Commit Message Conformance
 on:
   pull_request: {}
 permissions:
