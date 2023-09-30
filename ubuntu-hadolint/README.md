@@ -1,4 +1,4 @@
-# Ubuntu
+# Ubuntu HadoLint
 
 ```dockerfile
 FROM ghcr.io/platformfuzz/image-builder/ubuntu:latest
@@ -9,5 +9,5 @@ RUN apt-get install -y curl --no-install-recommends \
   && chmod +x /usr/bin/hadolint \
   && apt-get update -y \
   && apt-get upgrade -y \
-  && apt-get clean -y
+  && rm -rf /var/lib/apt/lists/*
 ``````
