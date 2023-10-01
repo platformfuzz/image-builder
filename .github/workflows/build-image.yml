@@ -11,6 +11,7 @@ on:
         - centos7
         - stream8
         - stream8-devel
+        - stream8-rpmbuild
         - stream9
         - ubuntu
         - ubuntu-hadolint
