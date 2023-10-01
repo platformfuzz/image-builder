@@ -12,5 +12,5 @@ RUN dnf module enable -y python38:3.8 \
     rpm-build rpmdevtools rpm-sign rpmlint systemd python39 \
   && dnf config-manager --set-enabled powertools \
   && dnf update -y \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -r -f /var/cache/*
 ``````
