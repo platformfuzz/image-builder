@@ -6,7 +6,8 @@ RUN dnf module enable -y python38:3.8 \
     gnupg hostname net-tools initscripts iputils \
     bind-utils yum-utils sshpass make gcc gcc-c++ \
     openssl-devel bzip2-devel libffi-devel zlib-devel \
-    rpm-build rpmdevtools rpm-sign rpmlint systemd python39 \
+    rpm-build rpmdevtools rpm-sign rpmlint systemd \
+    coreutils diffutils patch rpm-devel python39 \
   && dnf config-manager --set-enabled powertools \
   && dnf update -y \
   && rm -rf /var/lib/apt/lists/*
