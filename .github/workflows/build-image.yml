@@ -14,6 +14,7 @@ on:
         - stream8-rpmbuild
         - stream9
         - ubi8
+        - ubi8-rpmbuild
         - ubuntu
         - ubuntu-hadolint
 permissions:
