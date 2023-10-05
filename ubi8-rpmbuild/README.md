@@ -1,12 +1,11 @@
-# CentOS Stream 8
+# UBI 8 RPM Builder
 
 ```dockerfile
-FROM registry.access.redhat.com/ubi8/ubi:8.8-1067
+FROM ghcr.io/platformfuzz/image-builder/ubi8:latest
 
-RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
-    && /usr/bin/crb enable \
-    && dnf install -y https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-8.noarch.rpm \
-      'dnf-command(config-manager)' \
-    && dnf update -y \
-    && rm -r -f /var/cache/*
+RUN dnf -y install http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-8-6.el8.noarch.rpm \
+    http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-stream-repos-8-6.el8.noarch.rpm \
+  && dnf install -y dnf-utils rpm-build rpmdevtools \
+  && dnf clean all \
+  && rm -r -f /var/cache/*
 ``````
