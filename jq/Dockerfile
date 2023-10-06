@@ -4,12 +4,12 @@ COPY . .
 
 RUN rpmdev-setuptree
 
-COPY ./wine.spec /root/rpmbuild/SPECS/
+COPY ./jq.spec /root/rpmbuild/SPECS/
 
 RUN cd /root/rpmbuild/SOURCES/ \
   && spectool --get-files --all ../SPECS/*.spec \
   && cd .. \
-  && yum-builddep --assumeyes ./SPECS/*.spec 
+  && yum-builddep --assumeyes ./SPECS/*.spec
   # && rpmbuild --ba ./SPECS/*.spec
 
 # RUN /usr/bin/rpmbuild --ba /root/rpmbuild/SPECS/yq.spec \

@@ -1,0 +1,173 @@
+%global pkg_version 8.0
+%global pkg_release 1
+
+Name:           wine
+Version:        %{pkg_version}
+Release:        %{pkg_release}%{?dist}
+Summary:        Wine Is Not an Emulator - Windows compatibility layer
+License:        LGPLv2+
+URL:            https://www.winehq.org/
+Source0:        https://dl.winehq.org/wine/source/%{pkg_version}/wine-%{pkg_version}.tar.xz
+
+# Build requirements
+BuildRequires:  flex
+BuildRequires:  bison
+BuildRequires:  glibc-devel
+BuildRequires:  libjpeg-turbo-devel
+BuildRequires:  libpng-devel
+BuildRequires:  freetype-devel
+BuildRequires:  fontconfig-devel
+BuildRequires:  libX11-devel
+BuildRequires:  libXext-devel
+BuildRequires:  libXinerama-devel
+BuildRequires:  libXcursor-devel
+BuildRequires:  libXrandr-devel
+BuildRequires:  libXi-devel
+BuildRequires:  mesa-libGL-devel
+BuildRequires:  alsa-lib-devel
+BuildRequires:  gnutls-devel
+BuildRequires:  libxml2-devel
+BuildRequires:  libjpeg-turbo-devel
+BuildRequires:  libpng-devel
+BuildRequires:  libtiff-devel
+BuildRequires:  fontforge
+BuildRequires:  fontforge-devel
+BuildRequires:  libXcomposite-devel
+BuildRequires:  libXfixes-devel
+BuildRequires:  libXmu-devel
+BuildRequires:  libXrender-devel
+BuildRequires:  libXslt
+BuildRequires:  libXslt-devel
+BuildRequires:  libXt-devel
+BuildRequires:  libldap2-devel
+BuildRequires:  ncurses-devel
+BuildRequires:  openal-soft-devel
+BuildRequires:  libXcomposite-devel
+BuildRequires:  libXxf86vm-devel
+BuildRequires:  libv4l-devel
+BuildRequires:  libva-devel
+BuildRequires:  gstreamer-plugins-base-devel
+BuildRequires:  dbus-devel
+BuildRequires:  sane-backends-devel
+BuildRequires:  cups-devel
+BuildRequires:  libpcap-devel
+BuildRequires:  libusb-devel
+BuildRequires:  mpg123-devel
+BuildRequires:  pulseaudio-libs-devel
+BuildRequires:  lcms2-devel
+BuildRequires:  gsm-devel
+BuildRequires:  libieee1284-devel
+BuildRequires:  libexif-devel
+BuildRequires:  libXtst-devel
+BuildRequires:  openldap-devel
+BuildRequires:  openal-soft-devel
+
+# Required for 32-bit support
+BuildRequires:  gcc-multilib
+BuildRequires:  glibc-devel.i686
+BuildRequires:  libjpeg-turbo-devel.i686
+BuildRequires:  libpng-devel.i686
+BuildRequires:  freetype-devel.i686
+BuildRequires:  fontconfig-devel.i686
+BuildRequires:  libX11-devel.i686
+BuildRequires:  libXext-devel.i686
+BuildRequires:  libXinerama-devel.i686
+BuildRequires:  libXcursor-devel.i686
+BuildRequires:  libXrandr-devel.i686
+BuildRequires:  libXi-devel.i686
+BuildRequires:  mesa-libGL-devel.i686
+BuildRequires:  alsa-lib-devel.i686
+BuildRequires:  gnutls-devel.i686
+BuildRequires:  libxml2-devel.i686
+BuildRequires:  libjpeg-turbo-devel.i686
+BuildRequires:  libpng-devel.i686
+BuildRequires:  libtiff-devel.i686
+BuildRequires:  fontforge.i686
+BuildRequires:  fontforge-devel.i686
+BuildRequires:  libXcomposite-devel.i686
+BuildRequires:  libXfixes-devel.i686
+BuildRequires:  libXmu-devel.i686
+BuildRequires:  libXrender-devel.i686
+BuildRequires:  libXslt.i686
+BuildRequires:  libXslt-devel.i686
+BuildRequires:  libXt-devel.i686
+BuildRequires:  libldap2-devel.i686
+BuildRequires:  ncurses-devel.i686
+BuildRequires:  openal-soft-devel.i686
+BuildRequires:  libXcomposite-devel.i686
+BuildRequires:  libXxf86vm-devel.i686
+BuildRequires:  libv4l-devel.i686
+BuildRequires:  libva-devel.i686
+BuildRequires:  gstreamer-plugins-base-devel.i686
+BuildRequires:  dbus-devel.i686
+BuildRequires:  sane-backends-devel.i686
+BuildRequires:  cups-devel.i686
+BuildRequires:  libpcap-devel.i686
+BuildRequires:  libusb-devel.i686
+BuildRequires:  mpg123-devel.i686
+BuildRequires:  pulseaudio-libs-devel.i686
+BuildRequires:  lcms2-devel.i686
+BuildRequires:  gsm-devel.i686
+BuildRequires:  libieee1284-devel.i686
+BuildRequires:  libexif-devel.i686
+BuildRequires:  libXtst-devel.i686
+BuildRequires:  openldap-devel.i686
+BuildRequires:  openal-soft-devel.i686
+
+# Build Wine
+%description
+Wine is a compatibility layer for running Windows applications on Linux. Applications are run at full speed without the need of cpu emulation. Wine does not require Microsoft Windows, however it can use native system dll files in place of its own if they are available.
+
+%prep
+%autosetup
+
+%build
+# 64-bit build
+./configure
+make %{?_smp_mflags}
+
+# 32-bit build
+mkdir -p build32
+pushd build32
+../configure --with-wine64=../wine64
+make %{?_smp_mflags}
+popd
+
+%install
+# 64-bit install
+make DESTDIR=%{buildroot} install
+
+# 32-bit install
+pushd build32
+make DESTDIR=%{buildroot} install
+popd
+
+# Create symlinks for wine and wine64 binaries
+mkdir -p %{buildroot}%{_bindir}
+ln -s ../usr/bin/wine %{buildroot}%{_bindir}/wine
+ln -s ../usr/bin/wine64 %{buildroot}%{_bindir}/wine64
+
+%files
+%license LICENSE
+%doc ANNOUNCE AUTHORS README
+%{_bindir}/wine
+%{_bindir}/wine64
+%{_bindir}/wineboot
+%{_bindir}/winecfg
+%{_bindir}/wineconsole
+%{_bindir}/winedbg
+%{_bindir}/winefile
+%{_bindir}/wineg++
+%{_bindir}/winemaker
+%{_bindir}/winemine
+%{_bindir}/winepath
+%{_bindir}/wineserver
+%{_bindir}/winevdm
+%{_bindir}/winewrapper
+%{_datadir}/wine
+%{_mandir}/man1/wine.1*
+%{_mandir}/man1/wine64.1*
+
+%changelog
+* Mon Sep 27 2023 Your Name <youremail@example.com> - %{pkg_version}-%{pkg_release}
+- Initial package release
