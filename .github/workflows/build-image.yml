@@ -9,6 +9,7 @@ on:
         type: choice
         options:
         - centos7
+        - fedora39
         - stream8
         - stream8-devel
         - stream8-rpmbuild
