@@ -10,6 +10,7 @@ on:
         options:
         - centos7
         - fedora39
+        - fedora39-rpmbuild
         - stream8
         - stream8-devel
         - stream8-rpmbuild
