@@ -18,6 +18,7 @@ on:
         - ubi8
         - ubi8-rpmbuild
         - ubuntu
+        - ubuntu-awscli
         - ubuntu-hadolint
 permissions:
   id-token: write
