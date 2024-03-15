@@ -11,5 +11,4 @@
 * [UBI 8 Development](ubi8-devel/README.md)
 * [UBI 8 RPM Builder](ubi8-rpmbuild/README.md)
 * [Ubuntu](ubuntu/README.md)
-* [Ubuntu-hadolint](ubuntu-awscli/README.md)
 * [Ubuntu-hadolint](ubuntu-hadolint/README.md)
