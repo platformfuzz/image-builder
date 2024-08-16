@@ -6,6 +6,7 @@ RUN dnf install -y epel-release \
     dnf-utils \
     rpm-build \
     rpmdevtools \
+    rpmlint \
   && dnf config-manager --set-enabled powertools \
   && dnf update -y \
   && dnf clean all \
