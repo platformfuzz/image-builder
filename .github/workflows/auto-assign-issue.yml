@@ -7,4 +7,4 @@ permissions:
   issues: write
 jobs:
   auto-assign:
-    uses: platformfuzz/actions/.github/workflows/auto-assign-issue.yml@main
+    uses: actionsforge/actions/.github/workflows/auto-assign-issue.yml@main
